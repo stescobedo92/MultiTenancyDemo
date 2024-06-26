@@ -33,6 +33,10 @@ namespace MultiTenancyDemo.Data
                     entity.SetQueryFilter(queryFilter: filter as LambdaExpression);
                     entity.AddIndex(property: entity.FindProperty(nameof(ITenatEntity.TenatId))!);
                 }
+                else if(clrType.SkipTenantValidation()) 
+                {
+                    continue;
+                }
                 else
                 {
                     throw new Exception($"The entity {entity} has not been marked with ITennatEntiy or ICommonEntity");
