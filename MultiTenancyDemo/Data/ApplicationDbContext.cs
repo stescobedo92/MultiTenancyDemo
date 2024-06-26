@@ -48,6 +48,20 @@ namespace MultiTenancyDemo.Data
             }
         }
 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var item in ChangeTracker.Entries().Where(entry => entry.State.Equals(EntityState.Added) && entry.Entity is ITenatEntity)) 
+            {
+                if (string.IsNullOrWhiteSpace(_tenantId))
+                    throw new Exception($"The tenat with id {_tenantId} was not found when creating the record");
+
+                var entity = item.Entity as ITenatEntity;
+                entity!.TenatId = _tenantId;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
         private static LambdaExpression BuildGlobalTenantFilter<TEntity>(ApplicationDbContext applicationDbContext) where TEntity : class, ITenatEntity 
         {
             Expression<Func<TEntity, bool>> filter = tenatEntity => tenatEntity.TenatId.Equals(applicationDbContext._tenantId);
