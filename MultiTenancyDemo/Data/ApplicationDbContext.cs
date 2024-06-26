@@ -24,6 +24,13 @@ namespace MultiTenancyDemo.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Countries>().HasData(new Countries[]
+            {
+                new Countries {Id = 1, CountryName = "Country1", CountryCode = "C1" },
+                new Countries {Id = 2, CountryName = "Country2", CountryCode = "C2"},
+                new Countries {Id = 3, CountryName = "Country3", CountryCode = "C3"}
+            });
+
             foreach (var entity in builder.Model.GetEntityTypes())
             {
                 Type clrType = entity.ClrType;
