@@ -10,7 +10,7 @@ namespace MultiTenancyDemo.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        private readonly string _tenantId;
+        private string _tenantId;
 
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Countries> Countries => Set<Countries>();

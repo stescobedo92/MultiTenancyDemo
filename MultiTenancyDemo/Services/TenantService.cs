@@ -33,8 +33,11 @@ namespace MultiTenancyDemo.Services
 
         private static AuthenticationTicket? DecryptAuthCookie(HttpContext httpContext)
         {
-            var opt = httpContext.RequestServices.GetService<IOptionsMonitor<CookieAuthenticationOptions>>().Get("Identity.Application");
-            var cookie = opt?.CookieManager.GetRequestCookie(httpContext, opt.Cookie.Name!);
+            var opt = httpContext.RequestServices
+                .GetRequiredService<IOptionsMonitor<CookieAuthenticationOptions>>()
+                .Get("Identity.Application");
+
+            var cookie = opt.CookieManager.GetRequestCookie(httpContext, opt.Cookie.Name!);
 
             return opt.TicketDataFormat.Unprotect(cookie);
         }
